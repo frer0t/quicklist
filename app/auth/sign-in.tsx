@@ -4,10 +4,17 @@ import { Card } from "@/components/ui/Card";
 import { supabase } from "@/lib/supabase";
 import { useTheme } from "@/lib/ThemeContext";
 import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { Lock, Mail, RefreshCw } from "lucide-react-native";
 import { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -101,11 +108,18 @@ export default function SignInScreen() {
   };
 
   return (
-    <>
-      <StatusBar style="light" />
+    <KeyboardAvoidingView
+      style={[
+        styles.keyboardAvoidingView,
+        { backgroundColor: colors.background },
+      ]}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 20}
+    >
       <ScrollView
         style={[styles.container, { backgroundColor: colors.background }]}
         contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
           <Image
@@ -200,11 +214,14 @@ export default function SignInScreen() {
           </View>
         </Card>
       </ScrollView>
-    </>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

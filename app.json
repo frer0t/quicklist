@@ -27,7 +27,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "dev.frerot.quicklist"
     },
     "plugins": [
       "expo-router",
@@ -38,7 +39,8 @@
           "image": "./assets/images/splash-icon.png",
           "dark": {
             "image": "./assets/images/splash-icon.png",
-            "resizeMode": "contain"
+            "resizeMode": "contain",
+            "backgroundColor": "#121212"
           }
         }
       ]
