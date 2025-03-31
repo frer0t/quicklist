@@ -18,8 +18,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useTheme } from "@/lib/ThemeContext";
 import { Lock, Mail, ShieldCheck } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// Create a schema for sign-up validation
 const SignUpSchema = z
   .object({
     email: z.string().email("Please enter a valid email address"),
@@ -37,42 +37,24 @@ const SignUpPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [verificationSent, setVerificationSent] = useState(false);
   const router = useRouter();
   const { colors, isDark } = useTheme();
 
   const handleSignUp = async () => {
     try {
       setError(null);
-
       const validationResult = SignUpSchema.safeParse({
         email,
         password,
         confirmPassword,
       });
-
       if (!validationResult.success) {
         const errorMessage = validationResult.error.issues[0].message;
         setError(errorMessage);
         return;
       }
-
       setLoading(true);
-
-      const { data, error: checkError } = await supabase.functions.invoke(
-        "check-user-email",
-        {
-          method: "POST",
-          body: { email },
-        }
-      );
-
-      if (checkError) {
-        throw checkError;
-      }
-      if (data.success) {
-        setError("Email already exists. Please use a different email.");
-        return;
-      }
 
       const { error } = await supabase.auth.signUp({
         email,
@@ -83,17 +65,64 @@ const SignUpPage = () => {
         throw error;
       }
 
-      alert(
-        "Sign up successful! Please check your email to confirm your account."
-      );
-
-      router.replace("/auth/sign-in");
+      setVerificationSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
   };
+
+  if (verificationSent) {
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { backgroundColor: colors.background, padding: 20 },
+        ]}
+      >
+        <Card style={styles.verificationCard} elevation="medium">
+          <Text style={[styles.verificationTitle, { color: colors.text }]}>
+            Verify Your Email
+          </Text>
+          <Text
+            style={[styles.verificationText, { color: colors.textSecondary }]}
+          >
+            We've sent a verification link to:
+          </Text>
+          <Text style={[styles.emailText, { color: colors.primary }]}>
+            {email}
+          </Text>
+          <Text
+            style={[
+              styles.verificationText,
+              { color: colors.textSecondary, marginTop: 20 },
+            ]}
+          >
+            Please check your inbox and click the verification link to complete
+            your registration. After verification, you'll be redirected to the
+            sign-in page.
+          </Text>
+
+          <Button
+            title="Go to Sign In"
+            onPress={() => router.replace("/auth/sign-in")}
+            style={{ marginTop: 30 }}
+            fullWidth
+          />
+
+          <TouchableOpacity
+            onPress={() => setVerificationSent(false)}
+            style={styles.linkContainer}
+          >
+            <Text style={[styles.link, { color: colors.primary }]}>
+              Return to sign up
+            </Text>
+          </TouchableOpacity>
+        </Card>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -188,6 +217,7 @@ const SignUpPage = () => {
   );
 };
 export default SignUpPage;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -239,5 +269,25 @@ const styles = StyleSheet.create({
   },
   link: {
     fontSize: 16,
+  },
+  verificationCard: {
+    padding: 24,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  verificationTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  verificationText: {
+    fontSize: 16,
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  emailText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 8,
   },
 });
