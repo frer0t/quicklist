@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
     marginBottom: 6,
   },

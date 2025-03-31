@@ -38,3 +38,7 @@ yarn-error.*
 # build artifacts
 ios
 android
+
+# Supabase
+.branches
+.temp
