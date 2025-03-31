@@ -6,13 +6,18 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "quicklist",
-    "description": "Organize your life, effortlessly<",
+    "description": "Organize your life, effortlessly",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "./assets/images/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#121212"
+      }
     },
     "ios": {
       "supportsTablet": true,
@@ -30,7 +35,11 @@
         "expo-splash-screen",
         {
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "image": "./assets/images/splash-icon.png",
+          "dark": {
+            "image": "./assets/images/splash-icon.png",
+            "resizeMode": "contain"
+          }
         }
       ]
     ],
