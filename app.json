@@ -24,7 +24,14 @@
       "bundleIdentifier": "dev.frerot.quicklist",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "usesAppleSignIn": false,
+      "usesIcloudStorage": false,
+      "usesNonExemptEncryption": false,
+      "usesAppleHealthKit": false,
+      "usesAppleWallet": false,
+      "usesLocationBackgroundMode": false,
+      "usesPushNotifications": false
     },
     "android": {
       "adaptiveIcon": {
