@@ -52,7 +52,7 @@ Supabase, and a seamless user experience.
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/iamfrerot/Quicklist
+git clone https://github.com/frer0t/Quicklist
 cd Quicklist
 ```
 
